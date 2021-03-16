@@ -1,3 +1,5 @@
+// Copyright <Roman Balayan> @ 2021
+
 #include "cell.h"
 
 void Cell::init(Pair coords, std::shared_ptr<Ocean> oceanPtr) {
@@ -12,6 +14,12 @@ std::shared_ptr<Object> Cell::getObject() const {
 void Cell::setObject(std::shared_ptr<Object> newObjectPtr) {
     this->obj = newObjectPtr;
     //newObjectPtr->setCell(shared_from_this());
+}
+
+void Cell::killMe() {
+    this->ocean->removeObject(this->obj);
+    this->obj = std::make_shared<Object>(shared_from_this());
+    // old obj is automatically deleted
 }
 
 bool Cell::isEmpty()
@@ -39,4 +47,13 @@ std::shared_ptr<Cell> Cell::getNeighbour()
     }
     if (newY >= 0 && newY < Constants::Y && newX >= 0 && newX < Constants::X)
         return this->ocean->getCell(newX, newY);
+    return nullptr;
+}
+
+ObjType Cell::getObjType() {
+    return this->isEmpty() ? ObjType::EMPTY : this->obj->getType();
+}
+
+std::shared_ptr<Ocean> Cell::getOcean() {
+    return this->ocean;
 }

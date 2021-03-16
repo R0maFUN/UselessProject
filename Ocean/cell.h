@@ -3,14 +3,17 @@
 #pragma once
 
 #include <utility>
+#include <memory>
 
 #include "common.h"
-#include "Object.h"
+#include "object.h"
 #include "ocean.h"
 
 using Pair = std::pair<int, int>;
 
-//class Ocean;
+class Ocean;
+enum class ObjType;
+class Object;
 
 class Cell : std::enable_shared_from_this<Cell>
 {
@@ -26,6 +29,8 @@ public:
 	void killMe();
 	bool isEmpty();
 	std::shared_ptr<Cell> getNeighbour();
+	ObjType getObjType();
+	std::shared_ptr<Ocean> getOcean();
 private:
 	Pair coords;
 	std::shared_ptr<Object> obj;
